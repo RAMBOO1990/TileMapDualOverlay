@@ -6,6 +6,8 @@ Overlay rendering layer system for [TileMapDual](https://github.com/pablogila/Ti
 
 Mirrors DisplayLayer tiles onto one or more overlay TileMapLayers using the same atlas grid layout, enabling per-tile visual effects like water surface, rim light, or decoration.
 
+**Requirement:** Must use the **same TileSet** as TileMapDual, referencing different atlas sources within it. All atlas sources must share the same grid layout — tiles at identical atlas coordinates map to each other.
+
 ## Installation
 
 1. Copy `addons/TileMapDualOverlay/` into your project's `addons/` directory
@@ -16,9 +18,10 @@ Mirrors DisplayLayer tiles onto one or more overlay TileMapLayers using the same
 ## Quick Start
 
 1. Create a scene with **TileMapDualOverlay** as the root node
-2. Add an **OverlayLayer** child node
-3. In the Inspector, set **source_id** (or drag a texture to **source_texture** to auto-match)
-4. Assign your TileSet, draw tiles — the overlay auto-syncs
+2. Assign a **TileSet** to it — this TileSet must contain ALL atlas sources for terrain AND overlay tiles (e.g., riverbed in source 1, water in source 2, depth map in source 3). All sources must share the same grid layout.
+3. Add an **OverlayLayer** child node — its **TileSet** auto-inherits from the parent (shown immediately in the Inspector)
+4. In the Inspector, set **source_id** to the overlay's atlas source (or drag a texture to **source_texture** to auto-match)
+5. Draw tiles — the overlay auto-syncs with a matching tile from `source_id` at the same atlas grid position
 
 ## Inspector Properties
 

@@ -4,6 +4,8 @@
 
 将 DisplayLayer 的瓦片镜像到一个或多个 OverlayLayer 上，利用相同的 atlas 网格布局实现逐瓦片视觉效果，例如水面、发光边缘、装饰物等。
 
+**前置条件：** 必须与 TileMapDual 使用**同一个 TileSet**，叠加层引用其中的不同 atlas source。所有 atlas source 必须具有相同的网格布局 —— 相同 atlas 坐标的瓦片一一对应。
+
 ## 安装
 
 1. 将 `addons/TileMapDualOverlay/` 复制到项目的 `addons/` 目录中
@@ -14,9 +16,10 @@
 ## 快速开始
 
 1. 新建场景，根节点选择 **TileMapDualOverlay**
-2. 添加 **OverlayLayer** 子节点
-3. 在 Inspector 中设置 **source_id**（或拖入纹理到 **source_texture** 自动匹配）
-4. 绑定 TileSet，绘制瓦片 — 叠加图层自动同步
+2. 绑定一个 **TileSet** — 该 TileSet 必须包含地形和叠加层所需的**所有 atlas source**（例如 source 1 河床、source 2 水面、source 3 深度图）。各 source 网格布局必须一致。
+3. 添加 **OverlayLayer** 子节点 — 其 **TileSet** 自动继承父节点的值（Inspector 立刻显示）
+4. 在 Inspector 中设置 **source_id** 为叠加层对应的 atlas source（或拖入纹理到 **source_texture** 自动匹配）
+5. 绘制瓦片 — 叠加层自动从 `source_id` 取出相同 atlas 网格位置的瓦片同步渲染
 
 ## Inspector 属性
 

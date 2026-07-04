@@ -25,6 +25,14 @@ extends TileMapLayer
 			material = v
 
 
+# 进入场景树时自动继承父 TileSet（编辑器下新建子节点后立刻生效）
+func _enter_tree() -> void:
+	if not tile_set and Engine.is_editor_hint():
+		var parent := get_parent() as TileMapLayer
+		if parent and parent.tile_set:
+			tile_set = parent.tile_set
+
+
 # 根据拖入的纹理自动匹配 TileSet 中的 atlas source ID
 func resolve_source_id(ts: TileSet) -> void:
 	if not source_texture or not ts:
