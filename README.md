@@ -20,15 +20,15 @@ Mirrors DisplayLayer tiles onto one or more overlay TileMapLayers using the same
 1. Create a scene with **TileMapDualOverlay** as the root node
 2. Assign a **TileSet** to it — this TileSet must contain ALL atlas sources for terrain AND overlay tiles (e.g., riverbed in source 1, water in source 2, depth map in source 3). All sources must share the same grid layout.
 3. Add an **OverlayLayer** child node — its **TileSet** auto-inherits from the parent (shown immediately in the Inspector)
-4. In the Inspector, set **source_id** to the overlay's atlas source (or drag a texture to **source_texture** to auto-match)
-5. Draw tiles — the overlay auto-syncs with a matching tile from `source_id` at the same atlas grid position
+4. In the Inspector, set **Atlas Source ID** to the overlay's atlas source (or drag a texture to **source_texture** to auto-match)
+5. Draw tiles — the overlay auto-syncs with a matching tile from `atlas_source_id` at the same atlas grid position
 
 ## Inspector Properties
 
 | Property | Type | Description |
 |----------|------|-------------|
-| `source_id` | `int` | Atlas source ID to render from |
-| `source_texture` | `Texture2D` | Drag an atlas texture here — auto-fills `source_id` |
+| `atlas_source_id` | `int` | Atlas source ID to render from |
+| `source_texture` | `Texture2D` | Drag an atlas texture here — auto-fills `atlas_source_id` |
 | `overlay_z_index` | `int` | Render order (higher = on top) |
 | `overlay_material` | `Material` | Custom material (if set, `_build_material` is skipped) |
 
@@ -45,7 +45,7 @@ extends OverlayLayer
 const BED_HEIGHT_MAP_SOURCE_ID: int = 3
 
 func _init() -> void:
-    source_id = 2
+    atlas_source_id = 2
     overlay_z_index = 1
 
 func _build_material() -> Material:

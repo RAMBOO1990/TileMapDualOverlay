@@ -2,10 +2,10 @@
 class_name OverlayLayer
 extends TileMapLayer
 
-# 手动输入 atlas source ID（WaterOverlay 默认 = 2）
-@export var source_id: int = -1
+# 手动输入 atlas source ID（与 Godot UI 一致）
+@export var atlas_source_id: int = -1
 
-# 拖入 TileSet 纹理自动匹配 source_id（非空时优先于数字输入）
+# 拖入 TileSet 纹理自动匹配 atlas_source_id（非空时优先于数字输入）
 @export var source_texture: Texture2D = null:
 	set(v):
 		source_texture = v
@@ -40,7 +40,7 @@ func resolve_source_id(ts: TileSet) -> void:
 	for i in ts.get_source_count():
 		var src = ts.get_source(i)
 		if src is TileSetAtlasSource and src.texture == source_texture:
-			source_id = i
+			atlas_source_id = i
 			notify_property_list_changed()
 			return
 
@@ -52,7 +52,7 @@ func _build_material() -> Material:
 
 # 镜像 display_layer 的所有瓦片到本图层
 func sync(display_layer: DisplayLayer) -> void:
-	if source_id < 0:
+	if atlas_source_id < 0:
 		return
 	var dl_tiles := {}
 	for cell in display_layer.get_used_cells():
@@ -63,4 +63,4 @@ func sync(display_layer: DisplayLayer) -> void:
 			erase_cell(cell)
 
 	for cell in dl_tiles:
-		set_cell(cell, source_id, dl_tiles[cell])
+		set_cell(cell, atlas_source_id, dl_tiles[cell])

@@ -18,15 +18,15 @@
 1. 新建场景，根节点选择 **TileMapDualOverlay**
 2. 绑定一个 **TileSet** — 该 TileSet 必须包含地形和叠加层所需的**所有 atlas source**（例如 source 1 河床、source 2 水面、source 3 深度图）。各 source 网格布局必须一致。
 3. 添加 **OverlayLayer** 子节点 — 其 **TileSet** 自动继承父节点的值（Inspector 立刻显示）
-4. 在 Inspector 中设置 **source_id** 为叠加层对应的 atlas source（或拖入纹理到 **source_texture** 自动匹配）
-5. 绘制瓦片 — 叠加层自动从 `source_id` 取出相同 atlas 网格位置的瓦片同步渲染
+4. 在 Inspector 中设置 **Atlas Source ID** 为叠加层对应的 atlas source（或拖入纹理到 **source_texture** 自动匹配）
+5. 绘制瓦片 — 叠加层自动从 `atlas_source_id` 取出相同 atlas 网格位置的瓦片同步渲染
 
 ## Inspector 属性
 
 | 属性 | 类型 | 说明 |
 |------|------|------|
-| `source_id` | `int` | 渲染来源的 atlas source ID |
-| `source_texture` | `Texture2D` | 拖入 atlas 纹理自动填充 `source_id` |
+| `atlas_source_id` | `int` | 渲染来源的 atlas source ID |
+| `source_texture` | `Texture2D` | 拖入 atlas 纹理自动填充 `atlas_source_id` |
 | `overlay_z_index` | `int` | 渲染层级（值越大越靠前） |
 | `overlay_material` | `Material` | 自定义材质（设置后将跳过 `_build_material`） |
 
@@ -43,7 +43,7 @@ extends OverlayLayer
 const BED_HEIGHT_MAP_SOURCE_ID: int = 3
 
 func _init() -> void:
-    source_id = 2
+    atlas_source_id = 2
     overlay_z_index = 1
 
 func _build_material() -> Material:
