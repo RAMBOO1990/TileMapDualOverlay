@@ -84,6 +84,18 @@ Material priority:
 | `_init_overlay(layer: OverlayLayer)` | Configure a single overlay (tile_set, position, material) |
 | `_sync_all_overlays()` | Trigger full sync on all child overlay layers |
 
+## Known Issues
+
+### Editor crash on first script extension (Godot 4.7)
+
+When extending `TileMapDualOverlay` (or `TileMapDual`) with a new script in the editor, dragging the script onto the node may cause a **signal 11 (segfault)** crash. This only happens the **first time** — after saving the project and reopening the editor, the same operation works normally.
+
+**Root cause:** A Godot 4.7 engine bug ([#67971](https://github.com/godotengine/godot/issues/67971)) — `TileMapLayer`'s C++ code crashes when hot-swapping a script instance on a node that has dynamically-added children (added via `add_child()` in `_ready()`). This is triggered because `TileMapDual._ready()` creates `_display` as a child node.
+
+**Workaround:** Save the project and restart the editor after creating an extension script, then attach it.
+
+**Affects:** All `TileMapLayer`-derived nodes that add children in `_ready()` — applies to `TileMapDual` and `TileMapDualOverlay` alike.
+
 ## Limitations
 
 - Currently only syncs `grids[0]` — works for **Isometric** and **Square** grid shapes

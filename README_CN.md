@@ -82,6 +82,18 @@ func set_water_height(value: float) -> void:
 | `_init_overlay(layer: OverlayLayer)` | 初始化单个 OverlayLayer（tile_set、位置、材质） |
 | `_sync_all_overlays()` | 对所有子 OverlayLayer 触发全量同步 |
 
+## 已知问题
+
+### 首次扩展脚本时编辑器崩溃（Godot 4.7）
+
+在编辑器中继承 `TileMapDualOverlay`（或 `TileMapDual`）创建新脚本，拖拽脚本到节点上时可能触发 **signal 11 段错误**。仅在**首次**操作时崩溃——保存项目并重开编辑器后，同样操作可正常运行。
+
+**根因：** Godot 4.7 引擎 Bug（[#67971](https://github.com/godotengine/godot/issues/67971)）—— `TileMapLayer` 的 C++ 代码在热切换脚本实例时，未正确处理动态添加的子节点（`_ready()` 中通过 `add_child()` 添加）。`TileMapDual._ready()` 中 `add_child(_display)` 触发了此问题。
+
+**规避方法：** 创建扩展脚本后先保存项目、重启编辑器，再挂载脚本。
+
+**影响范围：** 所有在 `_ready()` 中添加子节点的 `TileMapLayer` 派生类——`TileMapDual` 和 `TileMapDualOverlay` 均受影响。
+
 ## 限制
 
 - 当前仅同步 `grids[0]` — 仅支持 **Isometric** 和 **Square** 网格
