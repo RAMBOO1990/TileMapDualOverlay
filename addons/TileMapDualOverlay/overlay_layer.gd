@@ -38,9 +38,10 @@ func resolve_source_id(ts: TileSet) -> void:
 	if not source_texture or not ts:
 		return
 	for i in ts.get_source_count():
-		var src = ts.get_source(i)
+		var sid := ts.get_source_id(i)
+		var src = ts.get_source(sid)
 		if src is TileSetAtlasSource and src.texture == source_texture:
-			atlas_source_id = i
+			atlas_source_id = sid
 			notify_property_list_changed()
 			return
 

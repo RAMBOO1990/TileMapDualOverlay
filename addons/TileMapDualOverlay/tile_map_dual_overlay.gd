@@ -14,6 +14,7 @@ func _setup_overlays() -> void:
 		if child is OverlayLayer:
 			_init_overlay(child)
 
+	_display.world_tiles_changed.connect(_on_world_tiles_changed, CONNECT_DEFERRED)
 	_display.terrain.changed.connect(_on_terrain_changed, CONNECT_DEFERRED)
 	_tileset_watcher.tileset_resized.connect(_on_tileset_resized)
 
@@ -28,11 +29,16 @@ func _init_overlay(layer: OverlayLayer) -> void:
 	layer.material = layer.overlay_material if layer.overlay_material else layer._build_material()
 
 
+# 信号转发：跳过 DisplayLayer 尚未初始化时的空调用
+func _on_world_tiles_changed(_coords: Array[Vector2i] = []) -> void:
+	if _display_layer_0() == null:
+		return
+	_sync_all_overlays(_coords)
+
+
 # 地形重组时全量重建所有 OverlayLayer
 func _on_terrain_changed() -> void:
 	assert(is_instance_valid(_display))
-	if not _display.world_tiles_changed.is_connected(_sync_all_overlays):
-		_display.world_tiles_changed.connect(_sync_all_overlays, CONNECT_DEFERRED)
 	_sync_all_overlays()
 
 
