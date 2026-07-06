@@ -24,9 +24,9 @@ func _setup_overlays() -> void:
 func _init_overlay(layer: OverlayLayer) -> void:
 	layer.tile_set = tile_set
 	layer.resolve_source_id(tile_set)
-	layer.z_index = layer.overlay_z_index
 	layer.position = _get_grid_offset()
-	layer.material = layer.overlay_material if layer.overlay_material else layer._build_material()
+	if not layer.material:
+		layer.material = layer._build_material()
 
 
 # 信号转发：跳过 DisplayLayer 尚未初始化时的空调用

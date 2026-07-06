@@ -12,18 +12,6 @@ extends TileMapLayer
 		if tile_set:
 			resolve_source_id(tile_set)
 
-@export var overlay_z_index: int = 1:
-	set(v):
-		overlay_z_index = v
-		if is_inside_tree():
-			z_index = v
-
-@export var overlay_material: Material = null:
-	set(v):
-		overlay_material = v
-		if is_inside_tree():
-			material = v
-
 
 # 进入场景树时自动继承父 TileSet（编辑器下新建子节点后立刻生效）
 func _enter_tree() -> void:
@@ -46,7 +34,7 @@ func resolve_source_id(ts: TileSet) -> void:
 			return
 
 
-# 子类覆盖：当 overlay_material 未在 Inspector 设置时调用
+# 子类覆盖：当 material 未在 Inspector 设置时调用
 func _build_material() -> Material:
 	return null
 
